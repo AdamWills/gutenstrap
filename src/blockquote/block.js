@@ -7,7 +7,8 @@
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks;
-const { RichText, InspectorControls } = wp.editor;
+const { Fragment } = wp.element;
+const { RichText, InspectorControls, AlignmentToolbar } = wp.editor;
 const { PanelBody, TextControl, SelectControl } = wp.components;
 
 const alignmentOptions = [
@@ -54,11 +55,11 @@ registerBlockType( 'gutenstrap/blockquote', {
 		},
 		footer: {
 			type: 'string',
-			default: 'Someone famous in ',
+			default: __( 'Someone famous in', 'gutenstrap' ),
 		},
 		sourceTitle: {
 			type: 'string',
-			default: 'Source Title',
+			default: __( 'Source Title', 'gutenstrap' ),
 		},
 		alignment: {
 			type: 'string',
@@ -69,8 +70,9 @@ registerBlockType( 'gutenstrap/blockquote', {
 	edit: function( { attributes, setAttributes, className = '' } ) {
 		const { content, footer = '', sourceTitle = '', alignment = '' } = attributes;
 		const onChangeContent = ( newValue ) => setAttributes( { content: newValue } );
+		const onChangeAlignment = ( newValue ) => setAttributes( { alignment: `text-${ newValue }` } );
 		return (
-			<div>
+			<Fragment>
 				{
 					<InspectorControls>
 						<PanelBody title={ __( 'Citation', 'gutenstrap' ) } initialOpen={ true }>
@@ -85,15 +87,15 @@ registerBlockType( 'gutenstrap/blockquote', {
 								onChange={ ( newValue ) => setAttributes( { sourceTitle: newValue } ) }
 							/>
 						</PanelBody>
-						<SelectControl
-							label={ __( 'Alignment', 'gutenstrap' ) }
+						<p>{ __( 'Alignment', 'gutenstrap' ) }</p>
+						<AlignmentToolbar
 							value={ alignment }
-							options={ alignmentOptions }
-							onChange={ ( newValue ) => setAttributes( { alignment: newValue } ) }
+							onChange={ onChangeAlignment }
 						/>
 					</InspectorControls>
 				}
 				<blockquote className={ `blockquote ${ className } ${ alignment }` }>
+					<p>Alignment: { alignment } </p>
 					<p className="mb-0">
 						<RichText
 							className="mb-0"
@@ -108,7 +110,7 @@ registerBlockType( 'gutenstrap/blockquote', {
 						}
 					</footer>
 				</blockquote>
-			</div>
+			</Fragment>
 		);
 	},
 
