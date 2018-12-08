@@ -10,4 +10,5 @@
  */
 
 import './alert/block.js';
+import './blockquote/block.js';
 import './lead/block.js';
