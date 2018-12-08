@@ -9,4 +9,5 @@
  * Webpack is compiling as the input file.
  */
 
-import './alerts/block.js';
+import './alert/block.js';
+import './lead/block.js';
